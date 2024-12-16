@@ -1,20 +1,36 @@
 import {readFileSync} from 'fs'
 import path from 'path'
 import {generateKeyPairSync} from 'crypto'
-
+import selfsigned from 'selfsigned'
 
 const getSSLOptions = () => {
+    console.log(path.join(process.cwd(), 'certs'))
     try{
+        const key = readFileSync(path.join(process.cwd(), 'certs', 'server_key.pem'), 'utf-8')
+        const cert = readFileSync(path.join(process.cwd(), 'certs', 'server_cert.pem'), 'utf-8')
+        
         return {
-            key: readFileSync(path.join(__dirname, 'certs', 'server_key.pem')),
-            cert: readFileSync(path.join(__dirname, 'certs', 'server_cert.pem')),
+            key,
+            cert
         }
     }catch(e){
-       const {privateKey, publicKey} = generateKeyPairSync("rsa", {
-        modulusLength: 2048,
-        publicKeyEncoding:{type: 'spki', format: 'pem'},
-        privateKeyEncoding:{type: 'pkcs8', format: 'pem'}
-       })
+        const pems = selfsigned.generate([{
+            type: 'server',
+            name:'localhost',
+            shortName: 'localhost',
+            value: '127.0.0.1',  
+          
+              
+          }], {
+            days: 365,
+            keySize: 2048,
+          
+          })
+       
+       return {
+        key: pems.private,
+        cert: pems.cert
+       }
     }
 }
 
