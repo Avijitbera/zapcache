@@ -12,7 +12,20 @@ export class Connection {
     }
 
     async connect(): Promise<void> {
-
+        return new Promise((resolve, reject) => {
+            this.socket = tls.connect({
+                host: this.host,
+                port: this.port,
+                rejectUnauthorized: false
+            }, () => {
+                logger.info('Connected to server')
+                resolve()
+            })
+            this.socket.on('error', (error) => {
+                logger.error(error)
+                reject(error)
+            })
+        })
     }
 
     async send<T>(command: any): Promise<ClientResponse<T>> {
