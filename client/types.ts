@@ -4,6 +4,12 @@ export interface ClientConfig {
     port?: number;
 }
 
+export interface ClientResponse<T = any> {
+    status: 'success' | 'error';
+    data?: T;
+    message?: string;
+  }
+
 export interface AuthConfig {
     email: string;
     password: string;
