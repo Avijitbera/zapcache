@@ -11,7 +11,7 @@ export interface DatabaseCommand {
     command: 'GET' | 'SET' | 'DELETE' | 'CLEAR' | 'KEYS';
     key?: string;
     value?: string;
-    token?: string;
+    userId?: string;
 }
 
 export interface DatabaseResponse<T = any> {

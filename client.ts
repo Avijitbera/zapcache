@@ -11,7 +11,7 @@ const options = {
 };
 const client = tls.connect(config.PORT, config.HOST, options, () => {
     console.log('connected to server');
-    client.write('Hello, server!');
+    client.write(JSON.stringify({command: 'GETIT', userId:'1'}));
 });
 
 client.on('data', (data) => {
