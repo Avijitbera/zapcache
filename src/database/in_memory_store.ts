@@ -10,7 +10,7 @@ export class InMemoryStore<T = any> implements DatabaseOperations<T> {
         this.expirationManager = new ExpirationManager()
         
         this.expirationManager.on('expired', (key: string) =>{
-
+            this.handleExpiration(key)
         })
     }
 
@@ -59,7 +59,24 @@ export class InMemoryStore<T = any> implements DatabaseOperations<T> {
         accountStorage.set(key, entry)
         return 'OK';
     };
-    delete: (key: string, accountId: string) => Promise<string>;
-    clear: (accountId: string) => Promise<string>;
-    keys: (accountId: string) => Promise<string[]>;
+    async delete(key: string, accountId: string): Promise<string>{
+        const accountStorage = this.getUserStorage(accountId)
+        this.expirationManager.clearExpirationTimer(this.getFullKey(accountId, key))
+        return accountStorage.delete(key) ? 'OK' : 'NOT_FOUND';
+    };
+    async clear(accountId: string):Promise<string>{
+        const accountStorage = this.getUserStorage(accountId)
+        for (const key of accountStorage.keys()){
+            this.expirationManager.clearExpirationTimer(this.getFullKey(accountId, key))
+        }
+        accountStorage.clear()
+        return 'OK';
+    };
+    async keys(accountId: string):Promise<string[]>{
+        const accountStorage = this.getUserStorage(accountId)
+        const now = Date.now()
+        return Array.from(accountStorage.entries())
+        .filter(([_, entry]) => !entry.expiresAt || entry.expiresAt > now)
+        .map(([key]) => key);
+    };
 }
