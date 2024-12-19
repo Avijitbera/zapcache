@@ -80,15 +80,24 @@ export class DatabaseREPL {
                     console.log(`Get ${key2}: ${value2}`)
                     break;
                 case 'delete':
-                    console.log("Delete")
+                    if(args.length !== 1){
+                        console.log("Usage: delete <key>")
+                        break;
+                    }
+                    await this.client.delete(args[0])
+                    console.log(`Deleted ${args[0]}`)
                     break;
                 case 'clear':
-                    console.log("Clear")
+                    await this.client.clear()
+                    console.log("Cleared")
                     break;
                 case 'keys':
-                    console.log("Keys")
+                    const keys = await this.client.keys()
+                    console.log(`Keys: ${keys.join(', ')}`)
                     break;
                 case 'exit':
+                case 'quit':
+                    this.stop();
                     console.log("Exit")
                     break;
                 default:
@@ -118,6 +127,13 @@ export class DatabaseREPL {
             console.log("Failed to connect to server")
             process.exit(1)
         }
+    }
+
+    stop(): void {
+        this.isRunning = false;
+        this.client.disconnect();
+        this.rl.close();
+        process.exit(0);
     }
 
     private showHelp(): void {
