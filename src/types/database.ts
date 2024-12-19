@@ -1,7 +1,7 @@
 
 export interface DatabaseEntery<T = any> {
     value: T;
-    expiresAt: number;
+    expiresAt?: number;
 }
 
 export interface DatabaseOperations<T = any> {
