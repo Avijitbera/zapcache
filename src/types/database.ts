@@ -1,4 +1,9 @@
 
+export interface DatabaseEntery<T = any> {
+    value: T;
+    expiresAt: number;
+}
+
 export interface DatabaseOperations<T = any> {
     get: (key: string, accountId: string) => Promise<T | null>;
     set: (key: string, value: T, accountId: string, expiresIn?:number) => Promise<string>;
