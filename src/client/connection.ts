@@ -1,6 +1,6 @@
 import tls from 'tls'
 import {ClientConfig, ClientResponse, } from './types'
-import { logger } from '../src/utils/logger'
+import { logger } from '../utils/logger'
 
 export class Connection {
     private socket: tls.TLSSocket | null = null;

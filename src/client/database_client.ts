@@ -1,6 +1,7 @@
 import {AuthConfig, ClientConfig, UserStore} from './types'
 import {Connection} from './connection'
 import { AuthClient } from './auth_client'
+import {config as hostConfig} from '../config/config'
 
 
 export class DatabaseClient {
@@ -8,7 +9,10 @@ export class DatabaseClient {
     private authClient: AuthClient;
 
     constructor(
-        config: ClientConfig = {},
+        config: ClientConfig = {
+            host: hostConfig.HOST,
+            port: hostConfig.PORT
+        },
         userStore: UserStore
     ){
         this.connection = new Connection(config)

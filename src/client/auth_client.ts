@@ -1,4 +1,4 @@
-import { logger } from '../src/utils/logger'
+import { logger } from '../utils/logger'
 import {Connection} from './connection'
 import {AuthConfig, ClientConfig, UserStore} from './types'
 import {MemoryUserStore} from './user_store'
