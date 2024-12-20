@@ -66,9 +66,10 @@ export class WorkerPool implements DatabaseOperations {
                     args
                 })
             })
-        }catch(error){
+        }finally{
+
             await this.pool.release(worker)
-            throw error
+            
         }
 
     }
@@ -76,8 +77,10 @@ export class WorkerPool implements DatabaseOperations {
     get(key: string, accountId: string): Promise<any>{
         return this.executeCommand('get', key, accountId)
     };
-    set(key: string, value: any, accountId: string, expiresIn?: number): Promise<string>{
-        return this.executeCommand('set', key, value, accountId, expiresIn)
+    async set(key: string, value: any, accountId: string, expiresIn?: number): Promise<string>{
+       var data:any = await this.executeCommand('set', key, value, accountId, expiresIn)
+       
+       return data
     };
     delete(key: string, accountId: string):Promise<string>{
         return this.executeCommand('delete', key, accountId)

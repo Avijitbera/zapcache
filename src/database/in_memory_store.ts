@@ -48,6 +48,7 @@ export class InMemoryStore<T = any> implements DatabaseOperations<T> {
 
     async set(key: string, value: T, accountId: string, expiresIn?: number): Promise<string>{
         const accountStorage = this.getUserStorage(accountId)
+        
         const entry: DatabaseEntery<T> = { value }
         if(expiresIn !== undefined && expiresIn > 0){
             entry.expiresAt = Date.now() + (expiresIn * 1000);
@@ -57,6 +58,7 @@ export class InMemoryStore<T = any> implements DatabaseOperations<T> {
             )
         }
         accountStorage.set(key, entry)
+        
         return 'OK';
     };
     async delete(key: string, accountId: string): Promise<string>{

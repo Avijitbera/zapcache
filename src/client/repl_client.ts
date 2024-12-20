@@ -127,7 +127,7 @@ export class DatabaseREPL {
             this.rl.on('line', async (line) => {
                 console.log({line})
                 if (this.isRunning) {
-                    console.log(line)
+                   
                 await this.handleCommand(line.trim())
                 this.rl.prompt();
                 }

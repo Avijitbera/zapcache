@@ -39,6 +39,7 @@ export class DatabaseClient {
             ...command,
             userId
         })
+        
         if(response.status === 'ERROR'){
             throw new Error(response.message)
         }

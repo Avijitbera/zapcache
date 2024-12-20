@@ -65,7 +65,7 @@ export class ConnectionHandler {
             }
         }
         const user = this.authService.getUser(request.userId)
-        console.log({request})
+        
         try {
             let result;
             switch(request.command){
@@ -95,6 +95,7 @@ export class ConnectionHandler {
                 data: result
             }
         } catch (error) {
+            console.log('error command',error)
             return {
                 status: 'ERROR',
                 message: 'Error executing command'
