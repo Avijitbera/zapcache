@@ -17,6 +17,7 @@ export interface DatabaseCommand {
     key?: string;
     value?: string;
     userId?: string;
+    expiresIn?: number;
 }
 
 export interface DatabaseResponse<T = any> {

@@ -8,7 +8,7 @@ export class ConnectionHandler {
     constructor(
         private socket: TLSSocket, 
         private authService: AuthService,
-        // private db: DatabaseOperations
+        private db: DatabaseOperations
     ){
         this.eventHandler()
     }
@@ -68,14 +68,19 @@ export class ConnectionHandler {
             let result;
             switch(request.command){
                 case 'SET':
+                    result = await this.db.set(request.key!, request.value!, user?.id!, request.expiresIn!);
                     break;
                 case 'GET':
+                    result = await this.db.get(request.key!, user?.id!)
                     break;
                 case 'DELETE':
+                    result = await this.db.delete(request.key!, user?.id!)
                     break;
                 case 'CLEAR':
+                    result = await this.db.clear(user?.id!)
                     break;
                 case 'KEYS':
+                    result = await this.db.keys(user?.id!)
                     break;
                 default:
                     return {
