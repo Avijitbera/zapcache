@@ -67,13 +67,29 @@ export class WorkerPool implements DatabaseOperations {
             })
         }catch(error){
             await this.pool.release(worker)
+            throw error
         }
 
     }
     
-    get: (key: string, accountId: string) => Promise<any>;
-    set: (key: string, value: any, accountId: string, expiresIn?: number) => Promise<string>;
-    delete: (key: string, accountId: string) => Promise<string>;
-    clear: (accountId: string) => Promise<string>;
-    keys: (accountId: string) => Promise<string[]>;
+    get(key: string, accountId: string): Promise<any>{
+        return this.executeCommand('get', key, accountId)
+    };
+    set(key: string, value: any, accountId: string, expiresIn?: number): Promise<string>{
+        return this.executeCommand('set', key, value, accountId, expiresIn)
+    };
+    delete(key: string, accountId: string):Promise<string>{
+        return this.executeCommand('delete', key, accountId)
+    };
+    clear(accountId: string): Promise<string>{
+        return this.executeCommand('clear', accountId)
+    };
+    keys(accountId: string): Promise<string[]>{
+        return this.executeCommand('keys', accountId)
+    };
+
+    async shoutdown(){
+        await this.pool.drain()
+        await this.pool.clear()
+    }
 }
