@@ -1,7 +1,7 @@
 import {DatabaseOperations} from '../types/database'
 import {Worker} from 'worker_threads'
 import * as genericPool from 'generic-pool'
-import path from 'path'
+import path, { resolve } from 'path'
 
 export class WorkerPool implements DatabaseOperations {
     private messageCounter = 0;
@@ -17,7 +17,8 @@ export class WorkerPool implements DatabaseOperations {
     ){
         const factory = {
             create:() =>{
-                const worker = new Worker(path.join(__dirname, '../workers/databse_worker.js'))
+                return new Promise<Worker>((resolve) =>{
+                    const worker = new Worker(path.join(__dirname, '../workers/databse_worker.js'))
                 worker.on('message', (message) =>{
                     const callback = this.callbacks.get(message.id)
                     if(callback){
@@ -32,11 +33,42 @@ export class WorkerPool implements DatabaseOperations {
                 worker.on('error', (error) => {
                     console.error('Worker error', error)
                 })
-                return worker
+                resolve(worker)
+                })
+                
+                
+            },
+            destroy: async(worker: Worker) => {
+                await worker.terminate()
             }
 
             
+        };
+        this.pool = genericPool.createPool(
+            factory,
+            {
+                max: this.numWorkers,
+                min: this.numWorkers
+            }
+        )
+    }
+
+    private async executeCommand<T>(operation: string, ...args: any[]): Promise<T> {
+        const worker = await this.pool.acquire()
+        const id = ++this.messageCounter
+        try{
+            return await new Promise<T>((resolve, reject) => {
+                this.callbacks.set(id, {resolve, reject})
+                worker.postMessage({
+                    id,
+                    operation,
+                    args
+                })
+            })
+        }catch(error){
+            await this.pool.release(worker)
         }
+
     }
     
     get: (key: string, accountId: string) => Promise<any>;
