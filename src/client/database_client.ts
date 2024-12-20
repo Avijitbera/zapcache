@@ -16,7 +16,7 @@ export class DatabaseClient {
         userStore: UserStore
     ){
         this.connection = new Connection(config)
-        this.authClient = new AuthClient(config, userStore)
+        this.authClient = new AuthClient(this.connection, userStore)
     }
     async connect(): Promise<void> {
         await this.connection.connect()
@@ -39,13 +39,16 @@ export class DatabaseClient {
             ...command,
             userId
         })
-        if(response.status === 'error'){
+        if(response.status === 'ERROR'){
             throw new Error(response.message)
         }
         return response.data!;
     }
 
     async set(key:string, value:any, expiresIn?:number): Promise<string> {
+        console.log({expiresIn})
+        console.log({key})
+        console.log({value})
         return this.sendAuthenticatedCommand({
             command: 'SET',
             key,

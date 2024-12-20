@@ -7,10 +7,10 @@ export class AuthClient {
     private connection: Connection
     private userStore: UserStore
 
-    constructor(config: ClientConfig = {},
+    constructor(connection: Connection,
         userStore: UserStore
     ) {
-        this.connection = new Connection(config)
+        this.connection = connection
         this.userStore = userStore || new MemoryUserStore()
     }
     async connect(): Promise<void> {
@@ -18,12 +18,14 @@ export class AuthClient {
     }
 
     async login(auth:AuthConfig): Promise<void> {
+        console.log({auth})
         const response = await this.connection.send<{userId: string}>({
             command: 'LOGIN',
             email: auth.email,
             password: auth.password
         })
-        if(response.status === 'error'){
+        console.log({response})
+        if(response.status === 'ERROR'){
             throw new Error(response.message)
         }
         this.userStore.setUser(response.data!.userId)
@@ -35,7 +37,7 @@ export class AuthClient {
             email: auth.email,
             password: auth.password
         })
-        if(response.status === 'error'){
+        if(response.status === 'ERROR'){
             throw new Error(response.message)
         }
         this.userStore.setUser(response.data!.userId)

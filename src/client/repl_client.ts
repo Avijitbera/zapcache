@@ -39,6 +39,7 @@ export class DatabaseREPL {
                     console.log("Login successful")
                     break;
                 case 'register':
+                    
                    if(args.length !== 2){
                         console.log("Usage: register <email> <password>")
                         break;
@@ -55,7 +56,8 @@ export class DatabaseREPL {
                         break;
                     }
                     const key = args[0];
-                    const valueStr = args.slice(1, args.length - 1).join(' ')
+                    const valueStr = args[1]
+                    
 
                     const expiresIn = args[args.length - 1].match(/^\d+$/)
                     ? parseInt(args[args.length - 1], 10)
@@ -66,6 +68,7 @@ export class DatabaseREPL {
                     } catch (error) {
                         value = valueStr;
                     }
+                    console.log({value})
 
                     await this.client.set(key, value, expiresIn)
                     console.log(`Set ${key} to ${value}`)
@@ -77,6 +80,10 @@ export class DatabaseREPL {
                     }
                     const key2 = args[0];
                     const value2 = await this.client.get(key2)
+                    if(value2 === null){
+                        console.log(`Key ${key2} not found`)
+                        break;
+                    }
                     console.log(`Get ${key2}: ${value2}`)
                     break;
                 case 'delete':
@@ -105,7 +112,7 @@ export class DatabaseREPL {
                     break;
             }
         } catch (error) {
-            console.log(error)
+            console.log({error})
         }
     
     }
@@ -118,9 +125,16 @@ export class DatabaseREPL {
             this.isRunning = true;
             this.rl.prompt();
             this.rl.on('line', async (line) => {
-                console.log(line)
-                await this.handleCommand(line)
+                console.log({line})
+                if (this.isRunning) {
+                    console.log(line)
+                await this.handleCommand(line.trim())
                 this.rl.prompt();
+                }
+                
+            })
+            this.rl.on('close', () => {
+                this.stop();
             })
 
         }catch(error){

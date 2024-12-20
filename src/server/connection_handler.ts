@@ -42,6 +42,7 @@ export class ConnectionHandler {
 
     private async handleAuth(request: AuthCommand): Promise<DatabaseResponse> {
         try {
+            
             const userId = request.command === 'LOGIN' ? 
             await this.authService.login(request.email, request.password) : await this.authService.register(request.email, request.password)
             return {
@@ -64,6 +65,7 @@ export class ConnectionHandler {
             }
         }
         const user = this.authService.getUser(request.userId)
+        console.log({request})
         try {
             let result;
             switch(request.command){

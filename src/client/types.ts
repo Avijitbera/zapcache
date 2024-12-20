@@ -5,7 +5,7 @@ export interface ClientConfig {
 }
 
 export interface ClientResponse<T = any> {
-    status: 'success' | 'error';
+    status: 'SUCCESS' | 'ERROR';
     data?: T;
     message?: string;
   }

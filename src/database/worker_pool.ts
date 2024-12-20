@@ -18,7 +18,7 @@ export class WorkerPool implements DatabaseOperations {
         const factory = {
             create:() =>{
                 return new Promise<Worker>((resolve) =>{
-                    const worker = new Worker(path.join(__dirname, '../workers/databse_worker.js'))
+                    const worker = new Worker(path.join(__dirname, '../workers/database_worker.js'))
                 worker.on('message', (message) =>{
                     const callback = this.callbacks.get(message.id)
                     if(callback){
@@ -54,6 +54,7 @@ export class WorkerPool implements DatabaseOperations {
     }
 
     private async executeCommand<T>(operation: string, ...args: any[]): Promise<T> {
+        
         const worker = await this.pool.acquire()
         const id = ++this.messageCounter
         try{

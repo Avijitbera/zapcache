@@ -11,13 +11,15 @@ export class UserService {
         }
 
         const userId = PasswordMannager.generateId()
-        const hashedPassword =  await PasswordMannager.hashPassword(password, PasswordMannager.generateSalt())
+        const salt = PasswordMannager.generateSalt()
+        const hashedPassword =  await PasswordMannager.hashPassword(password, salt)
         const user: User = {
             database:[],
             email:email,
             id:userId,
             isAdmin:true,
-            password:hashedPassword
+            password:hashedPassword,
+            salt:salt
         }
 
         this.users.set(userId, user)
@@ -26,11 +28,13 @@ export class UserService {
 
     async validateCredentials(email:string, password:string): Promise<User | undefined>{
         const user = this.findByEmail(email)
+        
         if(!user){
             return undefined
         }
 
-        const isValidPassword = await PasswordMannager.validatePassword(password, user.password, PasswordMannager.generateSalt())
+        const isValidPassword = await PasswordMannager.validatePassword(password, user.password, user.salt!)
+        
         if(!isValidPassword){
             return undefined
         }
@@ -39,6 +43,7 @@ export class UserService {
     }
 
     findByEmail(email:string): User | undefined {
+        console.log({user:this.users})
         return Array.from(this.users.values()).find(user => user.email == email)
     }
 
