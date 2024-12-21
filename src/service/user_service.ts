@@ -43,7 +43,6 @@ export class UserService {
     }
 
     findByEmail(email:string): User | undefined {
-        console.log({user:this.users})
         return Array.from(this.users.values()).find(user => user.email == email)
     }
 

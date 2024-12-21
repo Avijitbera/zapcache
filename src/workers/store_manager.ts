@@ -7,6 +7,7 @@ export class StoreManager<T = any> {
 
     constructor(){
         this.storage = new Map<string, Map<string, DatabaseEntery<T>>>()
+        this.storage.set('default', new Map<string, DatabaseEntery<T>>())
     }
 
     static getInstance(): StoreManager {

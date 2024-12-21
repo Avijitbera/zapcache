@@ -1,7 +1,9 @@
 import {parentPort, workerData} from 'worker_threads'
-import {InMemoryStore} from '../database/in_memory_store'
-
-const store = new InMemoryStore()
+// import {InMemoryStore} from '../database/in_memory_store'
+import {WorkerMessage} from './worker_type'
+import {StoreManager} from './store_manager'
+// const store = new InMemoryStore()
+const store = StoreManager.getInstance()
 parentPort?.on('message',async (message) => {
     
     const {id, operation, args} = message;
