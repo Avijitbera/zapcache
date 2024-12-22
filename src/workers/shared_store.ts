@@ -28,8 +28,8 @@ export class SharedStore<T = any> {
         return userStorage!
     }
 
-    set(userId: string, key: string, value: T, expiresIn?: number): string {
-        const userStore = this.getUserStore(userId);
+    set(accountId: string, key: string, value: T, expiresIn?: number): string {
+        const userStore = this.getUserStore(accountId);
         const entry: DatabaseEntery<T> = { value };
         
         if (expiresIn !== undefined && expiresIn > 0) {
@@ -37,12 +37,12 @@ export class SharedStore<T = any> {
         }
         
         userStore.set(key, entry);
-        this.broadcastUpdate('set', userId, key, entry);
+        this.broadcastUpdate('set', accountId, key, entry);
         return 'OK';
       }
 
-      get(userId: string, key: string): T | null {
-        const userStore = this.getUserStore(userId);
+      get(accountId: string, key: string): T | null {
+        const userStore = this.getUserStore(accountId);
         const entry = userStore.get(key);
         
         if (!entry) {
@@ -51,43 +51,43 @@ export class SharedStore<T = any> {
     
         if (entry.expiresAt && Date.now() >= entry.expiresAt) {
           userStore.delete(key);
-          this.broadcastUpdate('delete', userId, key);
+          this.broadcastUpdate('delete', accountId, key);
           return null;
         }
     
         return entry.value;
       }
 
-      delete(userId: string, key: string): string {
-        const userStore = this.getUserStore(userId);
+      delete(accountId: string, key: string): string {
+        const userStore = this.getUserStore(accountId);
         const result = userStore.delete(key) ? 'OK' : 'NOT_FOUND';
         if (result === 'OK') {
-          this.broadcastUpdate('delete', userId, key);
+          this.broadcastUpdate('delete', accountId, key);
         }
         return result;
       }
     
-      clear(userId: string): string {
-        const userStore = this.getUserStore(userId);
+      clear(accountId: string): string {
+        const userStore = this.getUserStore(accountId);
         userStore.clear();
-        this.broadcastUpdate('clear', userId);
+        this.broadcastUpdate('clear', accountId);
         return 'OK';
       }
-      keys(userId: string): string[] {
-        const userStore = this.getUserStore(userId);
+      keys(accountId: string): string[] {
+        const userStore = this.getUserStore(accountId);
         const now = Date.now();
         return Array.from(userStore.entries())
           .filter(([_, entry]) => !entry.expiresAt || entry.expiresAt > now)
           .map(([key]) => key);
       }
 
-      private broadcastUpdate(operation: string, userId: string, key?: string, entry?: DatabaseEntery<T>) {
+      private broadcastUpdate(operation: string, accountId: string, key?: string, entry?: DatabaseEntery<T>) {
         if (isMainThread) {
           this.workers.forEach(worker => {
             worker.postMessage({
               type: 'store-update',
               operation,
-              userId,
+              accountId,
               key,
               entry
             });
@@ -107,8 +107,8 @@ export class SharedStore<T = any> {
       }
 
       private handleWorkerUpdate(message: any) {
-        const { operation, userId, key, entry } = message;
-        const userStore = this.getUserStore(userId);
+        const { operation, accountId, key, entry } = message;
+        const userStore = this.getUserStore(accountId);
     
         switch (operation) {
           case 'set':

@@ -10,19 +10,19 @@ export class UserService {
             throw new Error('User already exists')
         }
 
-        const userId = PasswordMannager.generateId()
+        const accountId = PasswordMannager.generateId()
         const salt = PasswordMannager.generateSalt()
         const hashedPassword =  await PasswordMannager.hashPassword(password, salt)
         const user: User = {
             database:[],
             email:email,
-            id:userId,
+            id:accountId,
             isAdmin:true,
             password:hashedPassword,
             salt:salt
         }
 
-        this.users.set(userId, user)
+        this.users.set(accountId, user)
         return user
     }
 

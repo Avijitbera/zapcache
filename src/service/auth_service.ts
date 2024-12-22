@@ -7,8 +7,8 @@ export class AuthService {
         this.userService = new UserService();
     }
 
-    getUser(userId:string): User | undefined {
-        return this.userService.findById(userId)
+    getUser(accountId:string): User | undefined {
+        return this.userService.findById(accountId)
     }
 
     async register(email:string, password:string): Promise<string> {

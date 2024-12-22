@@ -34,10 +34,10 @@ export class DatabaseClient {
         if(!this.authClient.isAuthenticated()){
             throw new Error('Not authenticated')
         }
-        const userId = this.authClient.getUser()
+        const accountId = this.authClient.getUser()
         const response = await this.connection.send<T>({
             ...command,
-            userId
+            accountId
         })
         
         if(response.status === 'ERROR'){

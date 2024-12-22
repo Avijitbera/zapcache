@@ -16,7 +16,7 @@ export interface DatabaseCommand {
     command: 'GET' | 'SET' | 'DELETE' | 'CLEAR' | 'KEYS';
     key?: string;
     value?: string;
-    userId?: string;
+    accountId?: string;
     expiresIn?: number;
 }
 
@@ -28,6 +28,6 @@ export interface DatabaseResponse<T = any> {
 
 export interface Database {
     name: string;
-    userId: string;
+    accountId: string;
     id: string;
 }

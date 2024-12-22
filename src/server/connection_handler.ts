@@ -43,11 +43,11 @@ export class ConnectionHandler {
     private async handleAuth(request: AuthCommand): Promise<DatabaseResponse> {
         try {
             
-            const userId = request.command === 'LOGIN' ? 
+            const accountId = request.command === 'LOGIN' ? 
             await this.authService.login(request.email, request.password) : await this.authService.register(request.email, request.password)
             return {
                 status:'OK',
-                data:{userId}
+                data:{accountId}
             }
         } catch (error) {
             return {
@@ -59,13 +59,13 @@ export class ConnectionHandler {
 
     private async handleDatabaseRequest(request: DatabaseCommand): Promise<DatabaseResponse> {
         console.log({request})
-        if(!request.userId){
+        if(!request.accountId){
             return {
                 status: 'ERROR',
                 message: 'User not authenticated'
             }
         }
-        const user = this.authService.getUser(request.userId)
+        const user = this.authService.getUser(request.accountId)
         
         try {
             let result;

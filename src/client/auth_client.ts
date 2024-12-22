@@ -19,7 +19,7 @@ export class AuthClient {
 
     async login(auth:AuthConfig): Promise<void> {
         console.log({auth})
-        const response = await this.connection.send<{userId: string}>({
+        const response = await this.connection.send<{accountId: string}>({
             command: 'LOGIN',
             email: auth.email,
             password: auth.password
@@ -28,11 +28,11 @@ export class AuthClient {
         if(response.status === 'ERROR'){
             throw new Error(response.message)
         }
-        this.userStore.setUser(response.data!.userId)
+        this.userStore.setUser(response.data!.accountId)
         logger.info('Login successful')
     }
     async register(auth:AuthConfig): Promise<void> {
-        const response = await this.connection.send<{userId: string}>({
+        const response = await this.connection.send<{accountId: string}>({
             command: 'REGISTER',
             email: auth.email,
             password: auth.password
@@ -40,7 +40,7 @@ export class AuthClient {
         if(response.status === 'ERROR'){
             throw new Error(response.message)
         }
-        this.userStore.setUser(response.data!.userId)
+        this.userStore.setUser(response.data!.accountId)
         logger.info('Registration successful')
     }
 

@@ -7,11 +7,12 @@ export class PersistenceManager{
     private dataFile: string
     private static instance: PersistenceManager
     private saveInsterval?: NodeJS.Timeout;
+    private currentData: any = null;
 
     private constructor(){
         this.dataFile = path.join(process.cwd(),'data', 'data.json')
         this.ensureFileExists()
-        this.startAutoSave()
+        // this.startAutoSave()
     }
 
     static getInstance(): PersistenceManager{
@@ -28,17 +29,29 @@ export class PersistenceManager{
     }
 
     private startAutoSave(): void{
+        if(this.saveInsterval){
+            clearInterval(this.saveInsterval)
+        }
         this.saveInsterval = setInterval(() => {
-            this.saveToFile()
+            if(this.currentData !== null){
+                this.saveToFile(this.currentData)
+            }
         }, 5000)
     }
 
     async saveToFile(data?:any) {
+        if(data === undefined || data === null){
+            logger.info('No data to save')
+            return;
+        }
         try {
-            await fs.promises.writeFile(this.dataFile, JSON.stringify(data, null, 2))
+            this.currentData = data
+            const serializedData = JSON.stringify(data, null, 2)
+            await fs.promises.writeFile(this.dataFile, JSON.stringify(serializedData, null, 2))
             logger.info('Data saved to file')
         }catch (error) {
             logger.error('Error saving data to file', error)
+            throw error
         }
     }
 
@@ -46,6 +59,7 @@ export class PersistenceManager{
         try {
             if(fs.existsSync(this.dataFile)){
                 const data = await fs.promises.readFile(this.dataFile, 'utf-8')
+                this.startAutoSave()
                 return JSON.parse(data)
             }
 
@@ -55,6 +69,10 @@ export class PersistenceManager{
         return null;
     }
     cleanup(){
-        clearInterval(this.saveInsterval)
+        if(this.saveInsterval){
+
+            clearInterval(this.saveInsterval)
+            this.saveInsterval = undefined
+        }
     }
 }

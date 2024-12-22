@@ -3,40 +3,69 @@ import {parentPort, workerData} from 'worker_threads'
 import {WorkerMessage} from './worker_type'
 // import {StoreManager} from './store_manager'
 import {SharedStore} from './shared_store'
-// const store = new InMemoryStore()
-const store = SharedStore.getInstance()
+import {StoreCoordinator} from '../storage/store_coordinator'
+if(!parentPort){
+    throw new Error('Parent port not found')
+}
+
+const coordinator = new StoreCoordinator()
+const storage = coordinator.getStorage()
+
 parentPort?.on('message',async (message) => {
+    console.log({message})
+    if (message.type === 'store-update') {
+        const { operation, accountId, key, value } = message;
+        const userStore = storage.get(accountId) || new Map();
+        
+        switch (operation) {
+          case 'set':
+            userStore.set(key, value);
+            storage.set(accountId, userStore);
+            break;
+          case 'delete':
+            userStore.delete(key);
+            break;
+          case 'clear':
+            storage.delete(accountId);
+            break;
+        }
+        return;
+      }
     
     const {id, operation, args} = message;
     try {
+        const [accountId, ...restArgs] = args
+        const store = storage.get(accountId) || new Map()
         let result;
         switch(operation){
             case 'set':
-                const key = args[0];
-                const value = args[1];
-                const accountId = args[2];
-                const expiresIn = args[3];
-                console.log({store})
-                result = await store.set(key, value, accountId, expiresIn);
+                const [key, value, expiresIn] = restArgs
+                store.set(key, {value, expiresAt: expiresIn ? Date.now() + (expiresIn * 1000) : undefined});
+                storage.set(accountId, store);
+                coordinator.broadcastUpdate('set', accountId, key, value)
+                result = 'OK'
                 break;
             case 'get':
-                const key2 = args[0];
-                const accountId2 = args[1];
-                console.log({store})
-                result = await store.get(key2, accountId2);
+                const entry = store.get(restArgs[0]);
+                result = entry && !entry.expiresAt || entry.expiresAt > Date.now() ? entry.value : null;
                 break;
             case 'delete':
-                const key3 = args[0];
-                const accountId3 = args[1];
-                result = await store.delete(key3, accountId3);
+                result = store.delete(restArgs[0]) ? 'OK' : 'NOT_FOUND';
+                if(result === 'OK'){
+                    coordinator.broadcastUpdate('delete', accountId, restArgs[0])
+                }
                 break;
+                
             case 'clear':
-                const accountId4 = args[0];
-                result = await store.clear(accountId4);
+                storage.delete(accountId);
+                coordinator.broadcastUpdate('clear', accountId)
+                result = 'OK';
                 break;
+                
             case 'keys':
-                const accountId5 = args[0];
-                result = await store.keys(accountId5);
+                result = Array.from(store.entries())
+                .filter(([_, entry]) => !entry.expiresAt || entry.expiresAt > Date.now())
+                .map(([key]) => key);
                 break;
             default:
                 break;
