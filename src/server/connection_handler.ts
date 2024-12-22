@@ -58,6 +58,7 @@ export class ConnectionHandler {
     }
 
     private async handleDatabaseRequest(request: DatabaseCommand): Promise<DatabaseResponse> {
+        console.log({request})
         if(!request.userId){
             return {
                 status: 'ERROR',

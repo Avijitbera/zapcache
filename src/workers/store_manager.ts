@@ -7,7 +7,7 @@ export class StoreManager<T = any> {
 
     constructor(){
         this.storage = new Map<string, Map<string, DatabaseEntery<T>>>()
-        this.storage.set('default', new Map<string, DatabaseEntery<T>>())
+        // this.storage.set('default', new Map<string, DatabaseEntery<T>>())
     }
 
     static getInstance(): StoreManager {
@@ -56,7 +56,8 @@ export class StoreManager<T = any> {
             // )
         }
         accountStorage.set(key, entry)
-       
+        this.storage.set(accountId, accountStorage)
+       console.log({storage: this.storage})
         logger.info(`Set key ${key} in account ${accountId || 'default'}`, {value})
         
         return 'OK';

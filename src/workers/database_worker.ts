@@ -1,9 +1,10 @@
 import {parentPort, workerData} from 'worker_threads'
 // import {InMemoryStore} from '../database/in_memory_store'
 import {WorkerMessage} from './worker_type'
-import {StoreManager} from './store_manager'
+// import {StoreManager} from './store_manager'
+import {SharedStore} from './shared_store'
 // const store = new InMemoryStore()
-const store = StoreManager.getInstance()
+const store = SharedStore.getInstance()
 parentPort?.on('message',async (message) => {
     
     const {id, operation, args} = message;
@@ -15,11 +16,13 @@ parentPort?.on('message',async (message) => {
                 const value = args[1];
                 const accountId = args[2];
                 const expiresIn = args[3];
+                console.log({store})
                 result = await store.set(key, value, accountId, expiresIn);
                 break;
             case 'get':
                 const key2 = args[0];
                 const accountId2 = args[1];
+                console.log({store})
                 result = await store.get(key2, accountId2);
                 break;
             case 'delete':

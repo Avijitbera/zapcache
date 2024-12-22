@@ -47,9 +47,7 @@ export class DatabaseClient {
     }
 
     async set(key:string, value:any, expiresIn?:number): Promise<string> {
-        console.log({expiresIn})
-        console.log({key})
-        console.log({value})
+        
         return this.sendAuthenticatedCommand({
             command: 'SET',
             key,
