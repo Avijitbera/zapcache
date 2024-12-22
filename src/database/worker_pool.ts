@@ -18,7 +18,7 @@ export class WorkerPool implements DatabaseOperations {
     ){
         this.store = SharedStore.getInstance()
         const factory = {
-            create:() =>{
+            create:async() =>{
                 return new Promise<Worker>((resolve) =>{
                     const worker = new Worker(path.join(__dirname, '../workers/database_worker.js'))
                 worker.on('message', (message) =>{
@@ -59,45 +59,44 @@ export class WorkerPool implements DatabaseOperations {
         )
     }
 
-    private async executeCommand<T>(operation: string, ...args: any[]): Promise<T> {
-        
-        const worker = await this.pool.acquire()
-        const id = ++this.messageCounter
-        try{
+    private async executeCommand<T>(command: string, accountId: string, key?: string, value?: any, expiresIn?: number): Promise<T> {
+        const worker = await this.pool.acquire();
+        const id = ++this.messageCounter;
+        try {
             return await new Promise<T>((resolve, reject) => {
-                this.callbacks.set(id, {resolve, reject})
+                this.callbacks.set(id, {resolve, reject});
                 worker.postMessage({
                     id,
-                    operation,
-                    args
-                })
-            })
-        }finally{
-
-            await this.pool.release(worker)
-            
+                    command,
+                    accountId,
+                    key,
+                    value,
+                    expiresIn
+                });
+            });
+        } finally {
+            await this.pool.release(worker);
         }
-
     }
     
-    get(key: string, accountId: string): Promise<any>{
-        // return this.executeCommand('get', key, accountId)
-        const data = this.store.get(accountId, key)
-        return data
-    };
-    async set(key: string, value: any, accountId: string, expiresIn?: number): Promise<string>{
-    //    var data:any = await this.executeCommand('set', key, value, accountId, expiresIn)
-       const data = this.store.set(accountId, key, value, expiresIn)
-       return data
-    };
-    delete(key: string, accountId: string):Promise<string>{
-        return this.executeCommand('delete', key, accountId)
-    };
-    clear(accountId: string): Promise<string>{
-        return this.executeCommand('clear', accountId)
-    };
-    keys(accountId: string): Promise<string[]>{
-        return this.executeCommand('keys', accountId)
+    get(key: string, accountId: string): Promise<any> {
+        return this.executeCommand('GET', accountId, key);
+    }
+
+    set(key: string, value: any, accountId: string, expiresIn?: number): Promise<string> {
+        return this.executeCommand('SET', accountId, key, value, expiresIn);
+    }
+
+    delete(key: string, accountId: string): Promise<string> {
+        return this.executeCommand('DELETE', accountId, key);
+    }
+
+    clear(accountId: string): Promise<string> {
+        return this.executeCommand('CLEAR', accountId);
+    }
+
+    keys(accountId: string): Promise<string[]> {
+        return this.executeCommand('KEYS', accountId);
     };
 
     async shoutdown(){

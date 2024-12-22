@@ -35,6 +35,7 @@ export class DatabaseClient {
             throw new Error('Not authenticated')
         }
         const accountId = this.authClient.getUser()
+        console.log({command})
         const response = await this.connection.send<T>({
             ...command,
             accountId

@@ -96,7 +96,7 @@ export class DatabaseREPL {
                     break;
                 case 'clear':
                     await this.client.clear()
-                    console.log("Cleared")
+                    console.log("All values Cleared")
                     break;
                 case 'keys':
                     const keys = await this.client.keys()

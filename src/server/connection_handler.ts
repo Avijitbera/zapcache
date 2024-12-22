@@ -58,7 +58,7 @@ export class ConnectionHandler {
     }
 
     private async handleDatabaseRequest(request: DatabaseCommand): Promise<DatabaseResponse> {
-        console.log({request})
+       
         if(!request.accountId){
             return {
                 status: 'ERROR',
@@ -66,7 +66,7 @@ export class ConnectionHandler {
             }
         }
         const user = this.authService.getUser(request.accountId)
-        
+       
         try {
             let result;
             switch(request.command){
