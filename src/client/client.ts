@@ -18,7 +18,7 @@ export class DatabaseClient {
         this.socket = tls.connect({
           host: this.host,
           port: this.port,
-          cert: readFileSync(join(process.cwd(), 'certs/public-cert.pem')),
+        //   cert: readFileSync(join(process.cwd(), 'certs/public-cert.pem')),
           rejectUnauthorized: false // Only for development
         }, () => {
           logger.info('Connected to database server');
