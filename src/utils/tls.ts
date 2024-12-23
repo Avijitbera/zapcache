@@ -1,7 +1,7 @@
 import { generateKeyPairSync } from 'crypto';
 import { writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
-
+import selfsigned from 'selfsigned';
 export function generateTLSCertificates() {
   const certsDir = join(process.cwd(), 'certs');
   
@@ -9,20 +9,32 @@ export function generateTLSCertificates() {
     mkdirSync(certsDir);
   }
 
-  const { privateKey, publicKey } = generateKeyPairSync('rsa', {
-    modulusLength: 2048,
-    publicKeyEncoding: {
-      type: 'spki',
-      format: 'pem'
-    },
-    privateKeyEncoding: {
-      type: 'pkcs8',
-      format: 'pem'
-    }
-  });
+  // const { privateKey, publicKey } = generateKeyPairSync('rsa', {
+  //   modulusLength: 2048,
+  //   publicKeyEncoding: {
+  //     type: 'spki',
+  //     format: 'pem'
+  //   },
+  //   privateKeyEncoding: {
+  //     type: 'pkcs8',
+  //     format: 'pem'
+  //   }
+  // });
+  const pems = selfsigned.generate([{
+    type: 'server',
+    name:'localhost',
+    shortName: 'localhost',
+    value: '127.0.0.1',  
+  
+      
+  }], {
+    days: 365,
+    keySize: 2048,
+  
+  })
 
-  writeFileSync(join(certsDir, 'private-key.pem'), privateKey);
-  writeFileSync(join(certsDir, 'public-cert.pem'), publicKey);
+  writeFileSync(join(certsDir, 'private-key.pem'), pems.private);
+  writeFileSync(join(certsDir, 'public-cert.pem'), pems.cert);
 
-  return { key: privateKey, cert: publicKey };
+  return { key: pems.private, cert: pems.cert };
 }

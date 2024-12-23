@@ -21,7 +21,7 @@ export class Server {
     }
 
     start(){
-        this.server.listen(this.port, () => {
+        this.server.listen(this.port,'localhost', () => {
             console.log(`Server started on port ${this.port}`);
         });
     }
