@@ -6,7 +6,8 @@ import { join } from 'path';
 
 export class DatabaseClient {
   private socket: tls.TLSSocket | null = null;
-
+  private token: string | null = null;
+  private userId: string | null = null;
   constructor(
     private host: string = 'localhost',
     private port: number = 6379
@@ -40,6 +41,12 @@ export class DatabaseClient {
       throw new Error('Not connected to server');
     }
 
+    if (this.token && this.userId) {
+      command.token = this.token;
+      command.userId = this.userId;
+
+    }
+
     return new Promise((resolve, reject) => {
       this.socket!.write(JSON.stringify(command) + '\n');
 
@@ -52,6 +59,34 @@ export class DatabaseClient {
         }
       });
     });
+  }
+
+  async register(username: string, password: string): Promise<Response> {
+    const response = await this.sendCommand({
+      command: 'register',
+      args: [username, password]
+    });
+
+    if (response.status === 'success') {
+      this.token = response.data.token;
+      this.userId = response.data.userId;
+    }
+
+    return response;
+  }
+
+  async login(username: string, password: string): Promise<Response> {
+    const response = await this.sendCommand({
+      command: 'login',
+      args: [username, password]
+    });
+
+    if (response.status === 'success') {
+      this.token = response.data.token;
+      this.userId = response.data.userId;
+    }
+
+    return response;
   }
 
   async set(key: string, value: any): Promise<Response> {

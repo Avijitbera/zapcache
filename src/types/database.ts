@@ -6,6 +6,8 @@ export interface DatabaseValue {
   export interface Command {
     command: string;
     args: string[];
+    userId?: string;
+    token?: string;
   }
   
   export interface Response {
