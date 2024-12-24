@@ -28,3 +28,18 @@ export const registerUser = async (username: string, password: string): Promise<
         userId
     }
 }
+
+export const authenticateUser = async (username: string, password: string): Promise<AuthResponse> => {
+    const userId = createHash('sha256').update(username).digest('hex');
+    const user = users.get(userId)
+    if(!user){
+        throw new Error('Invalid username or password')
+    }
+    if(user.password !== hashPassword(password)){
+        throw new Error('Invalid username or password')
+    }
+    return {
+        token: generateToken(userId),
+        userId
+    }
+}
