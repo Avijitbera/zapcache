@@ -64,7 +64,8 @@ export class DatabaseClient {
   async register(username: string, password: string): Promise<Response> {
     const response = await this.sendCommand({
       command: 'register',
-      args: [username, password]
+      args: [username, password],
+      type: 'user'
     });
 
     if (response.status === 'success') {
@@ -78,7 +79,8 @@ export class DatabaseClient {
   async login(username: string, password: string): Promise<Response> {
     const response = await this.sendCommand({
       command: 'login',
-      args: [username, password]
+      args: [username, password],
+      type: 'user'
     });
 
     if (response.status === 'success') {
@@ -92,35 +94,40 @@ export class DatabaseClient {
   async set(key: string, value: any): Promise<Response> {
     return this.sendCommand({
       command: 'set',
-      args: [key, value.toString()]
+      args: [key, value.toString()],
+      type: 'command'
     });
   }
 
   async get(key: string): Promise<Response> {
     return this.sendCommand({
       command: 'get',
-      args: [key]
+      args: [key],
+      type: 'command'
     });
   }
 
   async del(key: string): Promise<Response> {
     return this.sendCommand({
       command: 'del',
-      args: [key]
+      args: [key],
+      type: 'command'
     });
   }
 
   async keys(): Promise<Response> {
     return this.sendCommand({
       command: 'keys',
-      args: []
+      args: [],
+      type: 'command'
     });
   }
 
   async clear(): Promise<Response> {
     return this.sendCommand({
       command: 'clear',
-      args: []
+      args: [],
+      type: 'command'
     });
   }
 

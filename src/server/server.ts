@@ -2,6 +2,7 @@ import tls from 'tls';
 import { ConnectionPool } from './pool';
 import { CommandHandler } from './handler';
 import { generateTLSCertificates } from '../utils/tls';
+import {Command} from '../types/database'
 import { logger } from '../utils/logger';
 
 export class Server {
@@ -21,9 +22,15 @@ export class Server {
 
     socket.on('data', async data => {
       try {
-        const command = JSON.parse(data.toString());
+        const command:Command = JSON.parse(data.toString());
+        // if(command.type == 'user' && (command.command == 'login' || command.command == 'register')) {
+
+        // }else{
+
+          
+        // }
         const response = await handler.handle(command);
-        socket.write(JSON.stringify(response) + '\n');
+          socket.write(JSON.stringify(response) + '\n');
       } catch (error) {
         logger.error('Error handling command:', error);
         socket.write(JSON.stringify({

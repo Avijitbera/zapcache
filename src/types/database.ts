@@ -4,10 +4,11 @@ export interface DatabaseValue {
   }
   
   export interface Command {
-    command: string;
+    command: "login" | "register" | "set" | "get" | "del" | "keys" | "clear";
     args: string[];
     userId?: string;
     token?: string;
+    type: "user" | "command"
   }
   
   export interface Response {

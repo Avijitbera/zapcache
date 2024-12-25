@@ -9,6 +9,11 @@ async function testDatabase() {
     await client.connect();
     logger.info('Connected successfully');
 
+    // Register a new user
+    logger.info('Testing user registration...');
+    const registerResult = await client.register('testuser', 'password123');
+    logger.info('Register result:', registerResult);
+
     // Test SET command
     logger.info('Testing SET command...');
     const setResult = await client.set('test-key', 'test-value');
@@ -29,21 +34,23 @@ async function testDatabase() {
     const delResult = await client.del('test-key');
     logger.info('DEL result:', delResult);
 
-    // Verify deletion
-    logger.info('Verifying deletion...');
-    const getAfterDel = await client.get('test-key');
-    logger.info('GET after DELETE:', getAfterDel);
+    // Test with another user
+    const client2 = new DatabaseClient();
+    await client2.connect();
+    await client2.register('testuser2', 'password456');
+    
+    // Set data for second user
+    await client2.set('test-key', 'different-value');
+    
+    // Verify data isolation
+    const user1Data = await client.get('test-key');
+    const user2Data = await client2.get('test-key');
+    
+    logger.info('Data isolation test:');
+    logger.info('User 1 data:', user1Data);
+    logger.info('User 2 data:', user2Data);
 
-    // Test CLEAR command
-    logger.info('Testing CLEAR command...');
-    await client.set('key1', 'value1');
-    await client.set('key2', 'value2');
-    const clearResult = await client.clear();
-    logger.info('CLEAR result:', clearResult);
-
-    // Verify clear
-    const keysAfterClear = await client.keys();
-    logger.info('Keys after CLEAR:', keysAfterClear);
+    client2.disconnect();
 
   } catch (error) {
     logger.error('Test failed:', error);

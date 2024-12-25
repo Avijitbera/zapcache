@@ -23,3 +23,54 @@
 {"data":"OK","level":"info","message":"CLEAR result:","status":"success","timestamp":"2024-12-23T07:27:55.869Z"}
 {"data":[],"level":"info","message":"Keys after CLEAR:","status":"success","timestamp":"2024-12-23T07:27:55.870Z"}
 {"level":"info","message":"Disconnected from server","timestamp":"2024-12-23T07:27:55.870Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-24T09:43:21.888Z"}
+{"level":"info","message":"Connected successfully","timestamp":"2024-12-24T09:43:21.889Z"}
+{"level":"info","message":"Testing user registration...","timestamp":"2024-12-24T09:43:21.890Z"}
+{"data":"OK","level":"info","message":"Register result:","status":"success","timestamp":"2024-12-24T09:43:21.891Z"}
+{"level":"info","message":"Testing SET command...","timestamp":"2024-12-24T09:43:21.892Z"}
+{"data":"OK","level":"info","message":"SET result:","status":"success","timestamp":"2024-12-24T09:43:21.892Z"}
+{"level":"info","message":"Testing GET command...","timestamp":"2024-12-24T09:43:21.892Z"}
+{"data":"OK","level":"info","message":"GET result:","status":"success","timestamp":"2024-12-24T09:43:21.893Z"}
+{"level":"info","message":"Testing KEYS command...","timestamp":"2024-12-24T09:43:21.893Z"}
+{"data":"OK","level":"info","message":"KEYS result:","status":"success","timestamp":"2024-12-24T09:43:21.893Z"}
+{"level":"info","message":"Testing DEL command...","timestamp":"2024-12-24T09:43:21.894Z"}
+{"data":"OK","level":"info","message":"DEL result:","status":"success","timestamp":"2024-12-24T09:43:21.894Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-24T09:43:21.896Z"}
+{"level":"info","message":"Data isolation test:","timestamp":"2024-12-24T09:43:21.898Z"}
+{"data":"OK","level":"info","message":"User 1 data:","status":"success","timestamp":"2024-12-24T09:43:21.898Z"}
+{"data":"OK","level":"info","message":"User 2 data:","status":"success","timestamp":"2024-12-24T09:43:21.898Z"}
+{"level":"info","message":"Disconnected from server","timestamp":"2024-12-24T09:43:21.898Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-24T10:16:01.611Z"}
+{"level":"info","message":"Connected successfully","timestamp":"2024-12-24T10:16:01.613Z"}
+{"level":"info","message":"Testing user registration...","timestamp":"2024-12-24T10:16:01.613Z"}
+{"data":{"token":"2ef89159b9d0450b08cccecc6122972c9ff454dcc00b3b850571b677b0976589","userId":"ae5deb822e0d71992900471a7199d0d95b8e7c9d05c40a8245a281fd2c1d6684"},"level":"info","message":"Register result:","status":"success","timestamp":"2024-12-24T10:16:01.615Z"}
+{"level":"info","message":"Testing SET command...","timestamp":"2024-12-24T10:16:01.615Z"}
+{"data":"OK","level":"info","message":"SET result:","status":"success","timestamp":"2024-12-24T10:16:01.616Z"}
+{"level":"info","message":"Testing GET command...","timestamp":"2024-12-24T10:16:01.616Z"}
+{"data":"OK","level":"info","message":"GET result:","status":"success","timestamp":"2024-12-24T10:16:01.616Z"}
+{"level":"info","message":"Testing KEYS command...","timestamp":"2024-12-24T10:16:01.616Z"}
+{"data":"OK","level":"info","message":"KEYS result:","status":"success","timestamp":"2024-12-24T10:16:01.617Z"}
+{"level":"info","message":"Testing DEL command...","timestamp":"2024-12-24T10:16:01.617Z"}
+{"data":"OK","level":"info","message":"DEL result:","status":"success","timestamp":"2024-12-24T10:16:01.617Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-24T10:16:01.619Z"}
+{"level":"info","message":"Data isolation test:","timestamp":"2024-12-24T10:16:01.621Z"}
+{"data":"OK","level":"info","message":"User 1 data:","status":"success","timestamp":"2024-12-24T10:16:01.621Z"}
+{"data":"OK","level":"info","message":"User 2 data:","status":"success","timestamp":"2024-12-24T10:16:01.621Z"}
+{"level":"info","message":"Disconnected from server","timestamp":"2024-12-24T10:16:01.622Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-24T10:20:55.263Z"}
+{"level":"info","message":"Connected successfully","timestamp":"2024-12-24T10:20:55.266Z"}
+{"level":"info","message":"Testing user registration...","timestamp":"2024-12-24T10:20:55.266Z"}
+{"data":{"token":"f67abcac1ccfa640906f910930af7c3c27e3670c5666b5f00ecc1b3c1d027348","userId":"ae5deb822e0d71992900471a7199d0d95b8e7c9d05c40a8245a281fd2c1d6684"},"level":"info","message":"Register result:","status":"success","timestamp":"2024-12-24T10:20:55.268Z"}
+{"level":"info","message":"Testing SET command...","timestamp":"2024-12-24T10:20:55.268Z"}
+{"data":"OK","level":"info","message":"SET result:","status":"success","timestamp":"2024-12-24T10:20:55.269Z"}
+{"level":"info","message":"Testing GET command...","timestamp":"2024-12-24T10:20:55.269Z"}
+{"data":null,"level":"info","message":"GET result:","status":"success","timestamp":"2024-12-24T10:20:55.270Z"}
+{"level":"info","message":"Testing KEYS command...","timestamp":"2024-12-24T10:20:55.270Z"}
+{"data":["test-value"],"level":"info","message":"KEYS result:","status":"success","timestamp":"2024-12-24T10:20:55.271Z"}
+{"level":"info","message":"Testing DEL command...","timestamp":"2024-12-24T10:20:55.271Z"}
+{"data":0,"level":"info","message":"DEL result:","status":"success","timestamp":"2024-12-24T10:20:55.271Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-24T10:20:55.274Z"}
+{"level":"info","message":"Data isolation test:","timestamp":"2024-12-24T10:20:55.275Z"}
+{"data":null,"level":"info","message":"User 1 data:","status":"success","timestamp":"2024-12-24T10:20:55.275Z"}
+{"data":null,"level":"info","message":"User 2 data:","status":"success","timestamp":"2024-12-24T10:20:55.276Z"}
+{"level":"info","message":"Disconnected from server","timestamp":"2024-12-24T10:20:55.276Z"}
