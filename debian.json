@@ -1,0 +1,10 @@
+{
+    "dest":"release/installers",
+    "icon":"assets/icon.png",
+    "name":"ZapCache",
+    "version":"1.0.0",
+    "categories":["Utility"],
+    "lintianOverrides":[
+        "changelog-file-missing-in-native-package"
+    ]
+}

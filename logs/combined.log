@@ -3,3 +3,34 @@
 {"level":"info","message":"Secure database server listening on port 6379","timestamp":"2024-12-23T07:27:47.151Z"}
 {"level":"info","message":"Client connected","timestamp":"2024-12-23T07:27:55.865Z"}
 {"level":"info","message":"Client disconnected","timestamp":"2024-12-23T07:27:55.870Z"}
+{"level":"info","message":"Creating new database connection","timestamp":"2024-12-24T09:43:01.745Z"}
+{"level":"info","message":"Creating new database connection","timestamp":"2024-12-24T09:43:01.747Z"}
+{"level":"info","message":"Secure database server listening on port 6379","timestamp":"2024-12-24T09:43:01.767Z"}
+{"level":"info","message":"Client connected","timestamp":"2024-12-24T09:43:21.890Z"}
+{"level":"info","message":"Client connected","timestamp":"2024-12-24T09:43:21.896Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-24T09:43:21.899Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-24T09:43:21.899Z"}
+{"level":"info","message":"Creating new database connection","timestamp":"2024-12-27T12:46:19.178Z"}
+{"level":"info","message":"Creating new database connection","timestamp":"2024-12-27T12:46:19.179Z"}
+{"level":"info","message":"Secure database server listening on port 6379","timestamp":"2024-12-27T12:46:19.199Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-27T12:49:54.718Z"}
+{"level":"info","message":"Connected successfully","timestamp":"2024-12-27T12:49:54.720Z"}
+{"level":"info","message":"Testing user registration...","timestamp":"2024-12-27T12:49:54.720Z"}
+{"level":"info","message":"Client connected","timestamp":"2024-12-27T12:49:54.720Z"}
+{"data":{"token":"c7690dc270e60a2eda89106c29be83c20e43d910cefaeb50269ec7234f750e06","userId":"ae5deb822e0d71992900471a7199d0d95b8e7c9d05c40a8245a281fd2c1d6684"},"level":"info","message":"Register result:","status":"success","timestamp":"2024-12-27T12:49:54.724Z"}
+{"level":"info","message":"Testing SET command...","timestamp":"2024-12-27T12:49:54.724Z"}
+{"data":"OK","level":"info","message":"SET result:","status":"success","timestamp":"2024-12-27T12:49:54.725Z"}
+{"level":"info","message":"Testing GET command...","timestamp":"2024-12-27T12:49:54.725Z"}
+{"data":null,"level":"info","message":"GET result:","status":"success","timestamp":"2024-12-27T12:49:54.726Z"}
+{"level":"info","message":"Testing KEYS command...","timestamp":"2024-12-27T12:49:54.726Z"}
+{"data":["test-value"],"level":"info","message":"KEYS result:","status":"success","timestamp":"2024-12-27T12:49:54.726Z"}
+{"level":"info","message":"Testing DEL command...","timestamp":"2024-12-27T12:49:54.726Z"}
+{"data":0,"level":"info","message":"DEL result:","status":"success","timestamp":"2024-12-27T12:49:54.727Z"}
+{"level":"info","message":"Connected to database server","timestamp":"2024-12-27T12:49:54.729Z"}
+{"level":"info","message":"Client connected","timestamp":"2024-12-27T12:49:54.729Z"}
+{"level":"info","message":"Data isolation test:","timestamp":"2024-12-27T12:49:54.730Z"}
+{"data":null,"level":"info","message":"User 1 data:","status":"success","timestamp":"2024-12-27T12:49:54.730Z"}
+{"data":null,"level":"info","message":"User 2 data:","status":"success","timestamp":"2024-12-27T12:49:54.730Z"}
+{"level":"info","message":"Disconnected from server","timestamp":"2024-12-27T12:49:54.731Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-27T12:49:54.731Z"}
+{"level":"info","message":"Client disconnected","timestamp":"2024-12-27T12:49:54.732Z"}

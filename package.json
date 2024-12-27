@@ -13,6 +13,7 @@
     "setup": "npm run generate-keys && npm run build",
     "generate-keys": "ts-node src/scripts/generate-keys.ts",
     "client": "ts-node src/client.ts"
+    
   },
   "author": "",
   "license": "ISC",
