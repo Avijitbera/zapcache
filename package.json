@@ -12,7 +12,13 @@
     "test": "jest",
     "setup": "npm run generate-keys && npm run build",
     "generate-keys": "ts-node src/scripts/generate-keys.ts",
-    "client": "ts-node src/client.ts"
+    "client": "ts-node src/client.ts",
+    "build:exe":"pkg .",
+    "build:win":"pkg . --targets node16-win-x64 --output release/zapcache-win.exe",
+    "build:linux":"pkg . --targets node16-linux-x64 --output release/zapcache-linux",
+    "build:mac":"pkg . --targets node16-macos-x64 --output release/zapcache-mac",
+    "build:deb":"electron-installer-debian --src release/zapcache-linux dest release/installers --arch amd64",
+    "build:rpm":"electron-installer-redhat --src release/installers --arch x86_64"
   },
   "author": "",
   "license": "ISC",
